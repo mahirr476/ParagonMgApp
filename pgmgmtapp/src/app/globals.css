@@ -86,3 +86,59 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+
+
+/* In your globals.css */
+.tooltip {
+  z-index: 60 !important;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.sidebar-slide-in {
+  animation: slideIn 300ms ease;
+}
+
+.sidebar-slide-out {
+  animation: slideOut 300ms ease;
+}
+
+@layer utilities {
+  .transition-sidebar {
+    transition-property: margin, width, transform;
+    transition-duration: 300ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+.sidebar-expanded {
+  margin-left: var(--sidebar-width);
+}
+
+.sidebar-collapsed {
+  margin-left: var(--sidebar-width-icon);
+}
+
+@media (max-width: 768px) {
+  .sidebar-expanded,
+  .sidebar-collapsed {
+    margin-left: 0;
+  }
+}

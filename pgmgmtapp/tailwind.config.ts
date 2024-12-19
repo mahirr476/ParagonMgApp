@@ -65,7 +65,14 @@ export default {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
-  		}
+  		},
+		transitionProperty: {
+		'width': 'width',
+		'spacing': 'margin, padding',
+		},
+		transitionTimingFunction: {
+		'bounce-in-out': 'cubic-bezier(0.87, 0, 0.13, 1)',
+		},
   	}
   },
   plugins: [require("tailwindcss-animate")],
