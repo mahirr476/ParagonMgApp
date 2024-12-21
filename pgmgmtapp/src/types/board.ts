@@ -25,7 +25,15 @@ export interface Group {
 
 // Task Types
 export type TaskStatus = 'Working on it' | 'Done' | 'Not Started' | 'Stuck';
-export type TaskPriority = 'Low' | 'Medium' | 'High';
+export type TaskPriority = 'Critical' | 'None'| 'Low' | 'Medium' | 'High';
+
+export const PRIORITY_STYLES = {
+  'Critical': { bg: 'bg-black', text: 'text-white', icon: true },
+  'High': { bg: 'bg-[#401694]', text: 'text-white', icon: false },
+  'Medium': { bg: 'bg-[#0073ea]', text: 'text-white', icon: false },
+  'Low': { bg: 'bg-[#579bfc]', text: 'text-white', icon: false },
+  'None': { bg: 'bg-[#c4c4c4]', text: 'text-white', icon: false }
+} as const
 
 export interface Task {
   id: string

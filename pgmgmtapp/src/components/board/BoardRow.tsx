@@ -17,16 +17,19 @@ import {
     MoreHorizontal, 
     X,
     Pencil,
-    Trash2
+    Trash2,
+    Info 
  } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { Task } from '@/types/board'
+import { Task, TaskStatus } from '@/types/board'
 import { 
   StatusBadge, 
   PriorityBadge, 
   TimelineBadge,
   OwnerAvatar 
 } from './components'
+import { isAfter, parseISO } from 'date-fns'
+
 
 
 interface BoardRowProps {
@@ -46,6 +49,15 @@ interface BoardRowProps {
       setEditDialogOpen(false)
     }
   
+  function isDatePast(dateStr?: string): boolean {
+    if (!dateStr) return false
+    const date = parseISO(dateStr)
+    return isAfter(new Date(), date)
+  }
+  
+  function isTaskDone(status: TaskStatus): boolean {
+    return status === 'Done'
+  }
 
   return (
     <div 
@@ -146,21 +158,42 @@ interface BoardRowProps {
         ))}
       </div>
 
-      {/* Status */}
-      <div className="py-1 px-3">
-        <StatusBadge status={task.status} />
+       {/* Status */}
+       <div className="py-1 px-3">
+        <StatusBadge 
+          status={task.status} 
+          onStatusChange={(newStatus) => onUpdate({ ...task, status: newStatus })}
+        />
       </div>
 
       {/* Due Date */}
       <div className="flex items-center py-1 px-3">
-        <span className="text-[13px] text-gray-900">{task.dueDate}</span>
+        <div className="w-full flex items-center justify-between">
+          <span className={cn(
+            "text-[13px]",
+            isDatePast(task.dueDateTime) && !isTaskDone(task.status) 
+              ? "text-[#e2445c]" 
+              : "text-gray-900"
+          )}>
+            {task.dueDate}
+          </span>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-4 w-4 p-0 opacity-0 group-hover:opacity-100"
+          >
+            <Info className="h-3 w-3" />
+          </Button>
+        </div>
       </div>
 
       {/* Priority */}
       <div className="py-1 px-3">
-        <PriorityBadge priority={task.priority} />
+        <PriorityBadge 
+          priority={task.priority}
+          onPriorityChange={(newPriority) => onUpdate({ ...task, priority: newPriority })}
+        />
       </div>
-
       {/* Timeline */}
       <div className="py-1 px-3">
         <TimelineBadge 
