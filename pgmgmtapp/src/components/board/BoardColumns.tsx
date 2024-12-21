@@ -20,9 +20,9 @@ import {
   
   export function BoardColumns({ columns }: BoardColumnsProps) {
     return (
-      <div className="grid grid-cols-[40px_2fr_1fr_1fr_1fr_1fr_1fr_40px] items-center gap-2 px-4 py-2 bg-[#f5f6f8] border-b">
+      <div className="grid grid-cols-[40px_2fr_1fr_1fr_1fr_1fr_1fr_40px] border-b bg-gray-50">
         {/* Checkbox Column */}
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center p-3">
           <Checkbox />
         </div>
   
@@ -31,18 +31,17 @@ import {
           <div
             key={column.id}
             className={cn(
-              "flex items-center gap-1 font-medium text-[13px] text-gray-600",
-              column.type === 'status' && "cursor-pointer hover:text-gray-900",
+              "flex items-center gap-1 p-3",
+              "font-medium text-sm text-gray-600"
             )}
-            style={{ width: `${column.width}fr` }}
           >
             <span className="truncate">{column.title}</span>
             
-            <div className="flex items-center gap-0.5 flex-shrink-0">
+            <div className="flex items-center gap-0.5 ml-auto">
               {column.type === 'status' && (
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <ChevronDown className="h-3 w-3" />
+                    <ChevronDown className="h-3 w-3 cursor-pointer hover:text-gray-900" />
                   </TooltipTrigger>
                   <TooltipContent>Sort by {column.title.toLowerCase()}</TooltipContent>
                 </Tooltip>
@@ -51,7 +50,7 @@ import {
               {(column.type === 'status' || column.type === 'date') && (
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Info className="h-3 w-3 text-gray-400" />
+                    <Info className="h-3 w-3 text-gray-400 cursor-pointer hover:text-gray-900" />
                   </TooltipTrigger>
                   <TooltipContent>Show {column.title.toLowerCase()} info</TooltipContent>
                 </Tooltip>
@@ -61,7 +60,7 @@ import {
         ))}
   
         {/* Add Column Button */}
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center p-3">
           <Tooltip>
             <TooltipTrigger asChild>
               <Button 

@@ -12,29 +12,38 @@ import type {
 
 // Status configurations
 export const STATUS_CONFIG = {
-  'Working on it': { color: 'bg-orange-400 text-white' },
-  'Done': { color: 'bg-green-500 text-white' },
-  'Not Started': { color: 'bg-gray-400 text-white' },
-  'Stuck': { color: 'bg-red-500 text-white' }
+  'Working on it': { color: 'bg-[#fdab3d]', textColor: 'text-white' },
+  'Done': { color: 'bg-[#00c875]', textColor: 'text-white' },
+  'Not Started': { color: 'bg-[#c4c4c4]', textColor: 'text-white' },
+  'Stuck': { color: 'bg-[#e2445c]', textColor: 'text-white' }
 } as const
 
 // Priority configurations
 export const PRIORITY_CONFIG = {
-  'High': { color: 'bg-indigo-900 text-white' },
-  'Medium': { color: 'bg-blue-500 text-white' },
-  'Low': { color: 'bg-blue-400 text-white' }
+  'High': { color: 'bg-[#401694]', textColor: 'text-white' },
+  'Medium': { color: 'bg-[#0073ea]', textColor: 'text-white' },
+  'Low': { color: 'bg-[#579bfc]', textColor: 'text-white' }
 } as const
 
 // Group color configuration
 export const GROUP_COLORS = {
-  'todo': 'border-l-4 border-blue-500',
-  'completed': 'border-l-4 border-green-500',
+  'todo': 'border-l-4 border-[#0073ea]',
+  'completed': 'border-l-4 border-[#00c875]',
 } as const
+
+// Sample users data
+export const SAMPLE_USERS = [
+  { id: '1', name: 'John Doe' },
+  { id: '2', name: 'Jane Smith' },
+  { id: '3', name: 'Mike Johnson' },
+  { id: '4', name: 'Sarah Wilson' },
+  { id: '5', name: 'Alex Brown' }
+]
 
 // Default columns for new boards
 export const DEFAULT_COLUMNS: Column[] = [
   { id: 'task', title: 'Task', type: 'text', width: 2 },
-  { id: 'owner', title: 'Owner', type: 'person', width: 1 },
+  { id: 'owners', title: 'Owners', type: 'person', width: 1 },
   { id: 'status', title: 'Status', type: 'status', width: 1 },
   { id: 'dueDate', title: 'Due date', type: 'date', width: 1 },
   { id: 'priority', title: 'Priority', type: 'status', width: 1 },
@@ -73,7 +82,7 @@ export const boards: Board[] = [
     },
     notifications: 'Everything',
     columns: DEFAULT_COLUMNS,
-    items: [], // Initially empty, items will be generated from tasks
+    items: [],
     groups: [
       {
         id: '1',
@@ -84,19 +93,28 @@ export const boards: Board[] = [
           {
             id: '1',
             title: 'Task 1',
-            owner: 'John',
+            owners: ['John Doe'],
             status: 'Working on it',
             dueDate: '14 Dec',
+            dueDateTime: '2024-12-14T00:00:00.000Z',
             priority: 'Low',
-            timeline: '14 - 15 Dec'
+            timeline: {
+              start: '14 Dec',
+              end: '15 Dec'
+            }
           },
           {
             id: '2',
             title: 'Task 2',
+            owners: ['Jane Smith', 'Mike Johnson'],
             status: 'Done',
             dueDate: '15 Dec',
+            dueDateTime: '2024-12-15T00:00:00.000Z',
             priority: 'High',
-            timeline: '16 - 17 Dec'
+            timeline: {
+              start: '16 Dec',
+              end: '17 Dec'
+            }
           }
         ]
       },
@@ -129,7 +147,7 @@ export const boards: Board[] = [
 // Column configuration for UI
 export const BOARD_COLUMNS = [
   { id: 'task', title: 'Task', width: '2fr', hasSort: false },
-  { id: 'owner', title: 'Owner', width: '1fr', hasSort: false },
+  { id: 'owners', title: 'Owners', width: '1fr', hasSort: false },
   { id: 'status', title: 'Status', width: '1fr', hasSort: true },
   { id: 'dueDate', title: 'Due date', width: '1fr', hasSort: true },
   { id: 'priority', title: 'Priority', width: '1fr', hasSort: false },

@@ -28,15 +28,18 @@ export type TaskStatus = 'Working on it' | 'Done' | 'Not Started' | 'Stuck';
 export type TaskPriority = 'Low' | 'Medium' | 'High';
 
 export interface Task {
-  id: string;
-  title: string;
-  owner?: string;
-  status: TaskStatus;
-  dueDate?: string;
-  priority: TaskPriority;
-  timeline: string;
+  id: string
+  title: string
+  owners: string[]  // Changed from owner to owners array
+  status: TaskStatus
+  dueDate?: string
+  dueDateTime?: string // Added for time tracking
+  priority: TaskPriority
+  timeline: {
+    start: string
+    end: string
+  }
 }
-
 // Board Types
 export type BoardType = 'Main' | 'Sub';
 export type NotificationType = 'Everything' | 'Important' | 'None';

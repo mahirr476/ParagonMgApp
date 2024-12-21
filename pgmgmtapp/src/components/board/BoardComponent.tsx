@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 import { BoardHeader } from './BoardHeader'
 import { BoardColumns } from './BoardColumns'
 import { BoardGroups } from './BoardGroups'
-import { Board } from '@/types/board'
+import { Board, Group } from '@/types/board'
 
 interface BoardComponentProps {
   className?: string
@@ -22,10 +22,6 @@ const BoardComponent = ({
 }: BoardComponentProps) => {
   const [isExpanded, setIsExpanded] = useState(true)
 
-  if (!board) {
-    return null // Or some loading state/error message
-  }
-
   const handleToggleGroup = (groupId: string) => {
     const updatedGroups = board.groups.map(group => 
       group.id === groupId ? { ...group, isExpanded: !group.isExpanded } : group
@@ -33,14 +29,16 @@ const BoardComponent = ({
     onBoardUpdate({ ...board, groups: updatedGroups })
   }
 
-  const handleAddTask = (groupId: string) => {
-    // TODO: Implement add task functionality
-    console.log('Add task to group:', groupId)
+  const handleUpdateGroup = (groupId: string, updates: Partial<Group>) => {
+    const updatedGroups = board.groups.map(group => 
+      group.id === groupId ? { ...group, ...updates } : group
+    )
+    onBoardUpdate({ ...board, groups: updatedGroups })
   }
 
   return (
     <Card className={cn(
-      "w-full shadow-none border-none bg-white",
+      "w-full shadow-none border-none bg-background px-4",
       className
     )}>
       <BoardHeader 
@@ -49,11 +47,11 @@ const BoardComponent = ({
         selectedBoard={board}
         onBoardSelect={onBoardUpdate}
       />
-      <BoardColumns columns={board.columns} />
       <BoardGroups 
         groups={board.groups}
         onToggleGroup={handleToggleGroup}
-        onAddTask={handleAddTask}
+        onUpdateGroup={handleUpdateGroup}
+        board={board}
       />
     </Card>
   )

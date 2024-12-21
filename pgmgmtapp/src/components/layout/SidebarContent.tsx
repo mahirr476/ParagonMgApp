@@ -35,7 +35,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { CreateBoardDialog } from '../board/CreateBoardDialog'
+import { CreateBoardDialog } from '../board/dialogs/CreateBoardDialog'
 import { useBoard } from '@/contexts/BoardContext'
 import { Board } from '@/types/board'
 
