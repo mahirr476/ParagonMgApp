@@ -1,26 +1,14 @@
 // src/data/board-data.ts
-
-// Types
-export type TaskStatus = 'Working on it' | 'Done' | 'Not Started' | 'Stuck'
-export type TaskPriority = 'Low' | 'Medium' | 'High'
-
-export interface Task {
-  id: string
-  title: string
-  owner?: string
-  status: TaskStatus
-  dueDate?: string
-  priority: TaskPriority
-  timeline: string
-}
-
-export interface Group {
-  id: string
-  title: string
-  isExpanded: boolean
-  tasks: Task[]
-  color: string // Added color property
-}
+import type {
+  Board,
+  Column,
+  Group,
+  Task,
+  TaskStatus,
+  TaskPriority,
+  BoardType,
+  NotificationType
+} from '@/types/board';
 
 // Status configurations
 export const STATUS_CONFIG = {
@@ -43,48 +31,24 @@ export const GROUP_COLORS = {
   'completed': 'border-l-4 border-green-500',
 } as const
 
-// Sample data
-export const SAMPLE_BOARD_DATA: Group[] = [
+// Default columns for new boards
+export const DEFAULT_COLUMNS: Column[] = [
+  { id: 'task', title: 'Task', type: 'text', width: 2 },
+  { id: 'owner', title: 'Owner', type: 'person', width: 1 },
+  { id: 'status', title: 'Status', type: 'status', width: 1 },
+  { id: 'dueDate', title: 'Due date', type: 'date', width: 1 },
+  { id: 'priority', title: 'Priority', type: 'status', width: 1 },
+  { id: 'timeline', title: 'Timeline', type: 'text', width: 1 }
+]
+
+// Default groups for new boards
+export const DEFAULT_GROUPS: Group[] = [
   {
     id: '1',
     title: 'To-Do',
     isExpanded: true,
     color: GROUP_COLORS.todo,
-    tasks: [
-      {
-        id: '1',
-        title: 'Task 1',
-        owner: 'John',
-        status: 'Working on it',
-        dueDate: '14 Dec',
-        priority: 'Low',
-        timeline: '14 - 15 Dec'
-      },
-      {
-        id: '2',
-        title: 'Task 2',
-        status: 'Done',
-        dueDate: '15 Dec',
-        priority: 'High',
-        timeline: '16 - 17 Dec'
-      },
-      {
-        id: '3',
-        title: 'New Task',
-        owner: 'Jane',
-        status: 'Not Started',
-        priority: 'Medium',
-        timeline: '18 - 19 Dec'
-      },
-      {
-        id: '4',
-        title: 'Task 3',
-        status: 'Stuck',
-        dueDate: '16 Dec',
-        priority: 'Medium',
-        timeline: '18 - 19 Dec'
-      }
-    ]
+    tasks: []
   },
   {
     id: '2',
@@ -95,7 +59,74 @@ export const SAMPLE_BOARD_DATA: Group[] = [
   }
 ]
 
-// Column configuration
+// Sample boards data
+export const boards: Board[] = [
+  {
+    id: 'board-1',
+    name: 'Paragon IT',
+    description: 'Manage any type of project. Assign owners, set timelines and keep track of where your project stands.',
+    type: 'Main',
+    owner: 'Mahir Rahman',
+    createdBy: {
+      name: 'Mahir Rahman',
+      date: 'Dec 15, 2024'
+    },
+    notifications: 'Everything',
+    columns: DEFAULT_COLUMNS,
+    items: [], // Initially empty, items will be generated from tasks
+    groups: [
+      {
+        id: '1',
+        title: 'To-Do',
+        isExpanded: true,
+        color: GROUP_COLORS.todo,
+        tasks: [
+          {
+            id: '1',
+            title: 'Task 1',
+            owner: 'John',
+            status: 'Working on it',
+            dueDate: '14 Dec',
+            priority: 'Low',
+            timeline: '14 - 15 Dec'
+          },
+          {
+            id: '2',
+            title: 'Task 2',
+            status: 'Done',
+            dueDate: '15 Dec',
+            priority: 'High',
+            timeline: '16 - 17 Dec'
+          }
+        ]
+      },
+      {
+        id: '2',
+        title: 'Completed',
+        isExpanded: false,
+        color: GROUP_COLORS.completed,
+        tasks: []
+      }
+    ]
+  },
+  {
+    id: 'board-2',
+    name: 'Development Tasks',
+    description: 'Track development tasks and bug fixes.',
+    type: 'Sub',
+    owner: 'Mahir Rahman',
+    createdBy: {
+      name: 'Mahir Rahman',
+      date: 'Dec 16, 2024'
+    },
+    notifications: 'Important',
+    columns: DEFAULT_COLUMNS,
+    items: [],
+    groups: DEFAULT_GROUPS
+  }
+]
+
+// Column configuration for UI
 export const BOARD_COLUMNS = [
   { id: 'task', title: 'Task', width: '2fr', hasSort: false },
   { id: 'owner', title: 'Owner', width: '1fr', hasSort: false },
@@ -104,3 +135,6 @@ export const BOARD_COLUMNS = [
   { id: 'priority', title: 'Priority', width: '1fr', hasSort: false },
   { id: 'timeline', title: 'Timeline', width: '1fr', hasSort: true }
 ] as const
+
+// Re-export the types that other files need
+export type { Board, Group, Task, TaskStatus, TaskPriority };

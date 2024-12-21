@@ -12,48 +12,13 @@ import {
   } from "@/components/ui/tooltip"
   import { cn } from "@/lib/utils"
   import { Button } from "@/components/ui/button"
+  import { Column } from '@/types/board'
   
-  // Types for the column configuration
-  interface ColumnConfig {
-    id: string
-    title: string
-    width?: string
-    hasSort?: boolean
-    hasInfo?: boolean
+  interface BoardColumnsProps {
+    columns: Column[]
   }
   
-  const BOARD_COLUMNS: ColumnConfig[] = [
-    { id: 'task', title: 'Task', width: '2fr' },
-    { id: 'owner', title: 'Owner', width: '1fr' },
-    { 
-      id: 'status', 
-      title: 'Status',
-      width: '1fr',
-      hasSort: true,
-      hasInfo: true
-    },
-    { 
-      id: 'dueDate', 
-      title: 'Due date',
-      width: '1fr',
-      hasSort: true,
-      hasInfo: true
-    },
-    { 
-      id: 'priority', 
-      title: 'Priority',
-      width: '1fr'
-    },
-    { 
-      id: 'timeline', 
-      title: 'Timeline',
-      width: '1fr',
-      hasSort: true,
-      hasInfo: true
-    }
-  ]
-  
-  export function BoardColumns() {
+  export function BoardColumns({ columns }: BoardColumnsProps) {
     return (
       <div className="grid grid-cols-[40px_2fr_1fr_1fr_1fr_1fr_1fr_40px] items-center gap-2 px-4 py-2 bg-[#f5f6f8] border-b">
         {/* Checkbox Column */}
@@ -62,19 +27,19 @@ import {
         </div>
   
         {/* Dynamic Columns */}
-        {BOARD_COLUMNS.map(column => (
+        {columns.map(column => (
           <div
             key={column.id}
             className={cn(
               "flex items-center gap-1 font-medium text-[13px] text-gray-600",
-              column.hasSort && "cursor-pointer hover:text-gray-900",
+              column.type === 'status' && "cursor-pointer hover:text-gray-900",
             )}
-            style={{ width: column.width }}
+            style={{ width: `${column.width}fr` }}
           >
             <span className="truncate">{column.title}</span>
             
             <div className="flex items-center gap-0.5 flex-shrink-0">
-              {column.hasSort && (
+              {column.type === 'status' && (
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <ChevronDown className="h-3 w-3" />
@@ -83,7 +48,7 @@ import {
                 </Tooltip>
               )}
               
-              {column.hasInfo && (
+              {(column.type === 'status' || column.type === 'date') && (
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Info className="h-3 w-3 text-gray-400" />

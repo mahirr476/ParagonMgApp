@@ -54,10 +54,10 @@ export function TopNavbar() {
       <div className="h-14 border-b flex items-center justify-between px-4 bg-white">
         <div className="flex items-center gap-4">
           <MondayLogo />
-          <Button variant="ghost" className="flex items-center gap-2 bg-gray-50">
+          {/* <Button variant="ghost" className="flex items-center gap-2 bg-gray-50">
               <span>My Workspace</span>
               <ChevronDown className="w-4 h-4" />
-            </Button>
+            </Button> */}
         </div>
 
         <div className="flex items-center gap-3">

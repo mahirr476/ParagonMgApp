@@ -1,4 +1,6 @@
 // src/types/board.ts
+
+// Column Types
 export type ColumnType = 'text' | 'number' | 'status' | 'date' | 'person';
 
 export interface Column {
@@ -13,9 +15,44 @@ export interface BoardItem {
   [key: string]: any; // Dynamic fields based on columns
 }
 
-export interface Board {
+export interface Group {
   id: string;
   title: string;
-  columns: Column[];
-  items: BoardItem[];
+  isExpanded: boolean;
+  tasks: Task[];
+  color: string;
+}
+
+// Task Types
+export type TaskStatus = 'Working on it' | 'Done' | 'Not Started' | 'Stuck';
+export type TaskPriority = 'Low' | 'Medium' | 'High';
+
+export interface Task {
+  id: string;
+  title: string;
+  owner?: string;
+  status: TaskStatus;
+  dueDate?: string;
+  priority: TaskPriority;
+  timeline: string;
+}
+
+// Board Types
+export type BoardType = 'Main' | 'Sub';
+export type NotificationType = 'Everything' | 'Important' | 'None';
+
+export interface Board {
+  id: string;
+  name: string;                    // Board name
+  description: string;             // Board description
+  type: BoardType;                 // Main or Sub
+  owner: string;                   // Board owner
+  createdBy: {                     // Creation metadata
+    name: string;
+    date: string;
+  };
+  notifications: NotificationType; // Notification settings
+  columns: Column[];              // Column configuration
+  items: BoardItem[];             // Board items
+  groups: Group[];                // Groups containing tasks
 }

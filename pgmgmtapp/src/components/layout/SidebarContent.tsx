@@ -1,6 +1,7 @@
 // src/components/layout/SidebarContent.tsx
 "use client"
 
+import { useState } from 'react'
 import { 
   SidebarHeader,
   SidebarContent as SidebarContentWrapper,
@@ -34,9 +35,21 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { CreateBoardDialog } from '../board/CreateBoardDialog'
+import { useBoard } from '@/contexts/BoardContext'
+import { Board } from '@/types/board'
+
+const CURRENT_USER = "Mahir Rahman"
 
 export function SidebarContent() {
-  const { state } = useSidebar();
+  const { state } = useSidebar()
+  const { boards, currentBoard, setCurrentBoard, setBoards } = useBoard()
+  const [createDialogOpen, setCreateDialogOpen] = useState(false)
+
+  const handleCreateBoard = (newBoard: Board) => {
+    setBoards([...boards, newBoard])
+    setCurrentBoard(newBoard)
+  }
 
   return (
     <>
@@ -55,7 +68,6 @@ export function SidebarContent() {
       </SidebarHeader>
 
       <SidebarContentWrapper>
-        {/* Main Navigation */}
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton tooltip="Home">
@@ -89,7 +101,6 @@ export function SidebarContent() {
 
         <SidebarSeparator />
 
-        {/* Workspaces Section */}
         <SidebarGroup>
           <SidebarGroupLabel className="flex items-center justify-between px-2">
             <span>Workspaces</span>
@@ -119,6 +130,7 @@ export function SidebarContent() {
                 variant="outline" 
                 size="sm" 
                 className="w-full justify-start gap-2 mb-2"
+                onClick={() => setCreateDialogOpen(true)}
               >
                 <Plus className="h-4 w-4" />
                 <span>Add Workspace</span>
@@ -126,21 +138,18 @@ export function SidebarContent() {
             </div>
 
             <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton 
-                  className="bg-blue-50 text-blue-700"
-                  tooltip="Paragon IT"
-                >
-                  <LayoutGrid className="w-4 h-4" />
-                  <span>Paragon IT</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton tooltip="Dashboard and reporting">
-                  <LayoutGrid className="w-4 h-4" />
-                  <span>Dashboard and reporting</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+              {boards.map((board) => (
+                <SidebarMenuItem key={board.id}>
+                  <SidebarMenuButton 
+                    className={currentBoard?.id === board.id ? "bg-blue-50 text-blue-700" : ""}
+                    tooltip={board.name}
+                    onClick={() => setCurrentBoard(board)}
+                  >
+                    <LayoutGrid className="w-4 h-4" />
+                    <span>{board.name}</span>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -156,6 +165,13 @@ export function SidebarContent() {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
+
+      <CreateBoardDialog
+        open={createDialogOpen}
+        onOpenChange={setCreateDialogOpen}
+        onCreateBoard={handleCreateBoard}
+        currentUser={CURRENT_USER}
+      />
     </>
   )
 }

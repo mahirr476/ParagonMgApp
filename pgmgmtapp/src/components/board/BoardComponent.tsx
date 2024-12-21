@@ -7,20 +7,30 @@ import { cn } from "@/lib/utils"
 import { BoardHeader } from './BoardHeader'
 import { BoardColumns } from './BoardColumns'
 import { BoardGroups } from './BoardGroups'
-import { SAMPLE_BOARD_DATA, type Group } from '@/data/board-data'
+import { Board } from '@/types/board'
 
 interface BoardComponentProps {
   className?: string
+  board: Board
+  onBoardUpdate: (board: Board) => void
 }
 
-const BoardComponent = ({ className }: BoardComponentProps) => {
+const BoardComponent = ({ 
+  className, 
+  board, 
+  onBoardUpdate 
+}: BoardComponentProps) => {
   const [isExpanded, setIsExpanded] = useState(true)
-  const [groups, setGroups] = useState<Group[]>(SAMPLE_BOARD_DATA)
+
+  if (!board) {
+    return null // Or some loading state/error message
+  }
 
   const handleToggleGroup = (groupId: string) => {
-    setGroups(prev => prev.map(group => 
+    const updatedGroups = board.groups.map(group => 
       group.id === groupId ? { ...group, isExpanded: !group.isExpanded } : group
-    ))
+    )
+    onBoardUpdate({ ...board, groups: updatedGroups })
   }
 
   const handleAddTask = (groupId: string) => {
@@ -35,11 +45,13 @@ const BoardComponent = ({ className }: BoardComponentProps) => {
     )}>
       <BoardHeader 
         isExpanded={isExpanded} 
-        onViewToggle={() => setIsExpanded(!isExpanded)} 
+        onViewToggle={() => setIsExpanded(!isExpanded)}
+        selectedBoard={board}
+        onBoardSelect={onBoardUpdate}
       />
-      <BoardColumns />
+      <BoardColumns columns={board.columns} />
       <BoardGroups 
-        groups={groups}
+        groups={board.groups}
         onToggleGroup={handleToggleGroup}
         onAddTask={handleAddTask}
       />
