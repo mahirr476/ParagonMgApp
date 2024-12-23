@@ -22,7 +22,6 @@ export function PriorityBadge({
   isEditable = true,
   onPriorityChange 
 }: PriorityBadgeProps) {
-
   const priorityOptions: TaskPriority[] = Object.keys(PRIORITY_STYLES) as TaskPriority[];
 
   if (isEditable) {
@@ -30,13 +29,11 @@ export function PriorityBadge({
       <Popover>
         <PopoverTrigger asChild>
           <Button
-            variant="ghost"
+            style={PRIORITY_STYLES[priority].style}
             className={cn(
               "w-full h-8 px-3 flex items-center justify-center gap-1 rounded",
               "hover:opacity-90 transition-opacity",
               "font-medium text-sm",
-              PRIORITY_STYLES[priority].bg,
-              PRIORITY_STYLES[priority].text,
               className
             )}
           >
@@ -51,13 +48,11 @@ export function PriorityBadge({
             {priorityOptions.map((option) => (
               <Button
                 key={option}
-                variant="ghost"
+                style={PRIORITY_STYLES[option].style}
                 className={cn(
                   "w-full h-9 px-3 justify-center gap-1 rounded-none",
                   "hover:opacity-90 transition-opacity",
-                  "font-medium text-sm",
-                  PRIORITY_STYLES[option].bg,
-                  PRIORITY_STYLES[option].text
+                  "font-medium text-sm"
                 )}
                 onClick={() => onPriorityChange?.(option)}
               >
@@ -80,13 +75,13 @@ export function PriorityBadge({
     )
   }
 
+  // Non-editable version
   return (
     <span 
+      style={PRIORITY_STYLES[priority].style}
       className={cn(
         "w-full h-8 px-3 flex items-center justify-center gap-1 rounded",
         "font-medium text-sm",
-        PRIORITY_STYLES[priority].bg,
-        PRIORITY_STYLES[priority].text,
         className
       )}
     >

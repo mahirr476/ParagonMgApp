@@ -27,13 +27,29 @@ export interface Group {
 export type TaskStatus = 'Working on it' | 'Done' | 'Not Started' | 'Stuck';
 export type TaskPriority = 'Critical' | 'None'| 'Low' | 'Medium' | 'High';
 
+// src/types/board.ts
 export const PRIORITY_STYLES = {
-  'Critical': { bg: 'bg-black', text: 'text-white', icon: true },
-  'High': { bg: 'bg-[#401694]', text: 'text-white', icon: false },
-  'Medium': { bg: 'bg-[#0073ea]', text: 'text-white', icon: false },
-  'Low': { bg: 'bg-[#579bfc]', text: 'text-white', icon: false },
-  'None': { bg: 'bg-[#c4c4c4]', text: 'text-white', icon: false }
-} as const
+  'Critical': { 
+    style: { backgroundColor: 'black', color: 'white' }, 
+    icon: true 
+  },
+  'High': { 
+    style: { backgroundColor: '#401694', color: 'white' }, 
+    icon: false 
+  },
+  'Medium': { 
+    style: { backgroundColor: '#0073ea', color: 'white' }, 
+    icon: false 
+  },
+  'Low': { 
+    style: { backgroundColor: '#579bfc', color: 'white' }, 
+    icon: false 
+  },
+  'None': { 
+    style: { backgroundColor: '#c4c4c4', color: 'white' }, 
+    icon: false 
+  }
+} as const;
 
 export interface Task {
   id: string
