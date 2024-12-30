@@ -70,14 +70,14 @@ export function CreateBoardDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create New Board</DialogTitle>
+          <DialogTitle>Create New Workspace</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4 py-4">
           <div className="space-y-2">
-            <label className="text-sm font-medium">Board Name</label>
+            <label className="text-sm font-medium">Workspace Name</label>
             <Input
-              placeholder="Enter board name"
+              placeholder="Enter workspace name"
               value={formData.name || ''}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             />
@@ -86,14 +86,14 @@ export function CreateBoardDialog({
           <div className="space-y-2">
             <label className="text-sm font-medium">Description</label>
             <Textarea
-              placeholder="Describe your board"
+              placeholder="Describe your workspace"
               value={formData.description || ''}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             />
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium">Board Type</label>
+            <label className="text-sm font-medium">Workspace Type</label>
             <Select
               value={formData.type}
               onValueChange={(value) => setFormData({ ...formData, type: value as 'Main' | 'Sub' })}
@@ -131,7 +131,7 @@ export function CreateBoardDialog({
             Cancel
           </Button>
           <Button onClick={handleSubmit}>
-            Create Board
+            Create Workspace
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -5,24 +5,7 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { BoardRow } from "./BoardRow"
 import { Group, Task, Board } from "@/types/board"
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
-import { STATUS_OPTIONS, PRIORITY_OPTIONS, SAMPLE_USERS } from '@/data/board-constants'
 import { BoardColumns } from "./BoardColumns"
-
 
 interface BoardGroupProps {
   group: Group
@@ -32,32 +15,7 @@ interface BoardGroupProps {
 }
 
 export function BoardGroup({ group, board, onToggle, onUpdateGroup }: BoardGroupProps) {
-  const [addTaskDialogOpen, setAddTaskDialogOpen] = useState(false)
-  const [newTask, setNewTask] = useState<Partial<Task>>({
-    status: 'Not Started',
-    priority: 'Medium'
-  })
-
-  const handleAddTask = () => {
-    if (!newTask.title) return
-
-    const task: Task = {
-      id: `task-${Date.now()}`,
-      title: newTask.title,
-      owners: newTask.owners || [],
-      status: newTask.status as Task['status'],
-      dueDate: newTask.dueDate,
-      priority: newTask.priority as Task['priority'],
-      timeline: newTask.timeline || { start: '', end: '' }
-    }
-
-    onUpdateGroup(group.id, {
-      tasks: [...group.tasks, task]
-    })
-
-    setAddTaskDialogOpen(false)
-    setNewTask({ status: 'Not Started', priority: 'Medium' })
-  }
+  const [isAddingTask, setIsAddingTask] = useState(false)
 
   const handleUpdateTask = (updatedTask: Task) => {
     onUpdateGroup(group.id, {
@@ -100,7 +58,7 @@ export function BoardGroup({ group, board, onToggle, onUpdateGroup }: BoardGroup
       {/* Group Tasks */}
       {group.isExpanded && (
         <div className="bg-white">
-        <BoardColumns columns={board.columns} />
+          <BoardColumns columns={board.columns} />
           {group.tasks.map((task) => (
             <BoardRow 
               key={task.id} 
@@ -110,13 +68,36 @@ export function BoardGroup({ group, board, onToggle, onUpdateGroup }: BoardGroup
             />
           ))}
 
+          {/* New Task Row */}
+          {isAddingTask && (
+            <BoardRow
+              task={{
+                id: `task-${Date.now()}`,
+                title: '',
+                owners: [],
+                status: 'Not Started',
+                priority: 'Medium',
+                dueDate: undefined,
+                dueDateTime: undefined,
+                timeline: { start: '', end: '' }
+              }}
+              onUpdate={(newTask) => {
+                onUpdateGroup(group.id, {
+                  tasks: [...group.tasks, newTask]
+                })
+                setIsAddingTask(false)
+              }}
+              onDelete={() => setIsAddingTask(false)}
+            />
+          )}
+
           {/* Add Task Button */}
           <div className="px-4 py-2 border-t">
             <Button 
               variant="ghost" 
               size="sm" 
               className="gap-2 text-gray-500 hover:text-gray-900"
-              onClick={() => setAddTaskDialogOpen(true)}
+              onClick={() => setIsAddingTask(true)}
             >
               <Plus className="h-4 w-4" />
               Add task
@@ -124,8 +105,6 @@ export function BoardGroup({ group, board, onToggle, onUpdateGroup }: BoardGroup
           </div>
         </div>
       )}
-
-      
     </div>
   )
 }

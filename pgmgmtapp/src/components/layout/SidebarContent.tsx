@@ -18,7 +18,6 @@ import {
 } from '@/components/ui/sidebar'
 import { Button } from '@/components/ui/button'
 import { 
-  Plus, 
   Home,
   FolderKanban,
   Star,
@@ -35,16 +34,14 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { CreateBoardDialog } from '../board/dialogs/CreateBoardDialog'
-import { useBoard } from '@/contexts/BoardContext'
-import { Board } from '@/types/board'
+import { WorkspaceMenu } from './sidebar/WorkspaceMenu'
+import { useBoard, Board } from '@/contexts/BoardContext'
 
 const CURRENT_USER = "Mahir Rahman"
 
 export function SidebarContent() {
   const { state } = useSidebar()
   const { boards, currentBoard, setCurrentBoard, setBoards } = useBoard()
-  const [createDialogOpen, setCreateDialogOpen] = useState(false)
 
   const handleCreateBoard = (newBoard: Board) => {
     setBoards([...boards, newBoard])
@@ -126,15 +123,10 @@ export function SidebarContent() {
 
           <SidebarGroupContent>
             <div className="px-2">
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="w-full justify-start gap-2 mb-2"
-                onClick={() => setCreateDialogOpen(true)}
-              >
-                <Plus className="h-4 w-4" />
-                <span>Add Workspace</span>
-              </Button>
+              <WorkspaceMenu 
+                onCreateBoard={handleCreateBoard} 
+                currentUser={CURRENT_USER} 
+              />
             </div>
 
             <SidebarMenu>
@@ -165,13 +157,6 @@ export function SidebarContent() {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
-
-      <CreateBoardDialog
-        open={createDialogOpen}
-        onOpenChange={setCreateDialogOpen}
-        onCreateBoard={handleCreateBoard}
-        currentUser={CURRENT_USER}
-      />
     </>
   )
 }

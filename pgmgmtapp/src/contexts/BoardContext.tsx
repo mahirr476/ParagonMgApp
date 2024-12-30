@@ -1,25 +1,25 @@
 // src/contexts/BoardContext.tsx
 "use client"
 
-import { createContext, useContext, useState, useEffect } from 'react'
-import { Board } from '@/types/board'
+import { createContext, useContext, useState } from 'react'
+import { Board as BoardType } from '@/types/board'
 import { boards as initialBoards } from '@/data/board-data'
 
 interface BoardContextType {
-  boards: Board[]
-  currentBoard: Board | null
-  setBoards: (boards: Board[]) => void
-  setCurrentBoard: (board: Board) => void
-  updateBoard: (updatedBoard: Board) => void
+  boards: BoardType[]
+  currentBoard: BoardType | null
+  setBoards: (boards: BoardType[]) => void
+  setCurrentBoard: (board: BoardType) => void
+  updateBoard: (updatedBoard: BoardType) => void
 }
 
 const BoardContext = createContext<BoardContextType | undefined>(undefined)
 
 export function BoardProvider({ children }: { children: React.ReactNode }) {
-  const [boards, setBoards] = useState<Board[]>(initialBoards)
-  const [currentBoard, setCurrentBoard] = useState<Board | null>(boards[0] || null)
+  const [boards, setBoards] = useState<BoardType[]>(initialBoards)
+  const [currentBoard, setCurrentBoard] = useState<BoardType | null>(boards[0] || null)
 
-  const updateBoard = (updatedBoard: Board) => {
+  const updateBoard = (updatedBoard: BoardType) => {
     setBoards(prev => 
       prev.map(board => 
         board.id === updatedBoard.id ? updatedBoard : board
@@ -52,3 +52,5 @@ export const useBoard = () => {
   }
   return context
 }
+
+export type { BoardType as Board }
