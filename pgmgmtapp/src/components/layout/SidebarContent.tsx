@@ -1,7 +1,7 @@
-// src/components/layout/SidebarContent.tsx
 "use client"
 
 import { useState } from 'react'
+import { useRouter, usePathname } from 'next/navigation'
 import { 
   SidebarHeader,
   SidebarContent as SidebarContentWrapper,
@@ -40,13 +40,20 @@ import { useBoard, Board } from '@/contexts/BoardContext'
 const CURRENT_USER = "Mahir Rahman"
 
 export function SidebarContent() {
+  const router = useRouter()
+  const pathname = usePathname()
   const { state } = useSidebar()
   const { boards, currentBoard, setCurrentBoard, setBoards } = useBoard()
+  const [showFavorites, setShowFavorites] = useState(true)
 
   const handleCreateBoard = (newBoard: Board) => {
     setBoards([...boards, newBoard])
     setCurrentBoard(newBoard)
+    router.push(`/board/${newBoard.id}`)
   }
+
+  const isActiveRoute = (path: string) => pathname === path
+  const isBoardRoute = (boardId: string) => pathname === `/board/${boardId}`
 
   return (
     <>
@@ -67,33 +74,61 @@ export function SidebarContent() {
       <SidebarContentWrapper>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton tooltip="Home">
+            <SidebarMenuButton 
+              tooltip="Home"
+              className={isActiveRoute('/') ? "bg-blue-50 text-blue-700" : ""}
+              onClick={() => router.push('/')}
+            >
               <Home className="w-4 h-4" />
               <span>Home</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
 
           <SidebarMenuItem>
-            <SidebarMenuButton tooltip="My Work">
+            <SidebarMenuButton 
+              tooltip="My Work"
+              className={isActiveRoute('/my-work') ? "bg-blue-50 text-blue-700" : ""}
+              onClick={() => router.push('/my-work')}
+            >
               <FolderKanban className="w-4 h-4" />
               <span>My Work</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
 
           <SidebarMenuItem className="flex items-center justify-between">
-            <SidebarMenuButton tooltip="Favorites" className="flex-1">
+            <SidebarMenuButton 
+              tooltip="Favorites" 
+              className={`flex-1 ${isActiveRoute('/favorites') ? "bg-blue-50 text-blue-700" : ""}`}
+              onClick={() => router.push('/favorites')}
+            >
               <Star className="w-4 h-4" />
               <span>Favorites</span>
             </SidebarMenuButton>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-8 w-8">
-                  <ChevronDown className="h-4 w-4" />
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="h-8 w-8"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setShowFavorites(!showFavorites)
+                  }}
+                >
+                  <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${
+                    showFavorites ? 'rotate-180' : ''
+                  }`} />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>Show/Hide Favorites</TooltipContent>
             </Tooltip>
           </SidebarMenuItem>
+
+          {showFavorites && (
+            <div className="pl-8 py-2 text-sm text-muted-foreground">
+              No favorites yet
+            </div>
+          )}
         </SidebarMenu>
 
         <SidebarSeparator />
@@ -133,9 +168,12 @@ export function SidebarContent() {
               {boards.map((board) => (
                 <SidebarMenuItem key={board.id}>
                   <SidebarMenuButton 
-                    className={currentBoard?.id === board.id ? "bg-blue-50 text-blue-700" : ""}
+                    className={isBoardRoute(board.id) ? "bg-blue-50 text-blue-700" : ""}
                     tooltip={board.name}
-                    onClick={() => setCurrentBoard(board)}
+                    onClick={() => {
+                      setCurrentBoard(board)
+                      router.push(`/board/${board.id}`)
+                    }}
                   >
                     <LayoutGrid className="w-4 h-4" />
                     <span>{board.name}</span>
@@ -150,7 +188,11 @@ export function SidebarContent() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton tooltip="Settings">
+            <SidebarMenuButton 
+              tooltip="Settings"
+              className={isActiveRoute('/settings') ? "bg-blue-50 text-blue-700" : ""}
+              onClick={() => router.push('/settings')}
+            >
               <Settings className="w-4 h-4" />
               <span>Settings</span>
             </SidebarMenuButton>

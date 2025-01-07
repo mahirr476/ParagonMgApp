@@ -5,9 +5,8 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import { DatePicker } from "@/components/ui/date-picker"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Task } from "@/types/board"
-import { SAMPLE_USERS, STATUS_OPTIONS, PRIORITY_OPTIONS } from "@/data/board-constants"
+import { SAMPLE_USERS} from "@/data/board-constants"
 import { format } from "date-fns"
-import { cn } from "@/lib/utils"
 
 interface EditableCellProps {
   type: 'title' | 'owners' | 'status' | 'priority' | 'dueDate' | 'timeline'

@@ -1,57 +1,29 @@
-// src/app/page.tsx
+// src/app/(dashboard)/page.tsx (Home)
 "use client"
 
-import { useEffect } from 'react'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Star, Plus, Settings2, MoreVertical, Rocket } from 'lucide-react'
 import { useBoard } from '@/contexts/BoardContext'
-import { useRouter } from 'next/navigation'
-import { boards as initialBoards } from '@/data/board-data'
 
 export default function HomePage() {
-  const router = useRouter()
-  const { boards, setBoards, setCurrentBoard } = useBoard()
-
-  useEffect(() => {
-    // Initialize boards if none exist
-    if (boards.length === 0) {
-      setBoards(initialBoards)
-    }
-  }, [boards.length, setBoards])
+  const { boards } = useBoard()
 
   const RecentBoard = ({ board }) => (
-    <div 
-      className="relative group cursor-pointer"
-      onClick={() => {
-        setCurrentBoard(board)
-        router.push(`/board/${board.id}`)
-      }}
-    >
-      <Card className="w-[280px] overflow-hidden hover:shadow-lg transition-shadow">
-        <img src="/api/placeholder/280/140" alt={board.name} className="w-full h-[140px] object-cover" />
-        <div className="p-3">
-          <div className="flex items-center gap-2">
-            <span className="font-medium">{board.name}</span>
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="opacity-0 group-hover:opacity-100 ml-auto h-8 w-8"
-              onClick={(e) => {
-                e.stopPropagation()
-                // Handle favorite action
-              }}
-            >
-              <Star className="h-4 w-4" />
-            </Button>
-          </div>
-          <div className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
-            <Rocket className="h-3 w-3" />
-            <span>work management • Main workspace</span>
-          </div>
+    <Card className="w-[280px] overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
+      <img src="/api/placeholder/280/140" alt={board.name} className="w-full h-[140px] object-cover" />
+      <div className="p-3">
+        <div className="flex items-center gap-2">
+          <span className="font-medium">{board.name}</span>
+          <Button variant="ghost" size="icon" className="opacity-0 group-hover:opacity-100 ml-auto h-8 w-8">
+            <Star className="h-4 w-4" />
+          </Button>
         </div>
-      </Card>
-    </div>
+        <div className="text-sm text-muted-foreground mt-1">
+          work management • Main workspace
+        </div>
+      </div>
+    </Card>
   )
 
   return (
@@ -77,6 +49,7 @@ export default function HomePage() {
           </div>
         </section>
 
+        
         <section>
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-medium flex items-center gap-2">
@@ -90,7 +63,7 @@ export default function HomePage() {
           </div>
           <Card className="p-4">
             <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-full bg-gray-200 flex-shrink-0" />
+              <div className="w-8 h-8 rounded-full bg-gray-200 flex-shrink-0"></div>
               <div className="flex-1">
                 <div className="flex items-center justify-between">
                   <h3 className="font-medium">Roy Mann</h3>

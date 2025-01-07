@@ -3,6 +3,8 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { BoardProvider } from '@/contexts/BoardContext'
+import MainLayout from '@/components/layout/MainLayout'
+import { TooltipProvider } from "@/components/ui/tooltip"
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -19,9 +21,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <BoardProvider>
-          {children}
-        </BoardProvider>
+        <TooltipProvider delayDuration={300}>
+          <BoardProvider>
+            <MainLayout>
+              {children}
+            </MainLayout>
+          </BoardProvider>
+        </TooltipProvider>
       </body>
     </html>
   )
