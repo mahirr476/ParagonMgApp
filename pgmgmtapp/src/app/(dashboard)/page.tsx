@@ -9,7 +9,15 @@ import { useBoard } from '@/contexts/BoardContext'
 export default function HomePage() {
   const { boards } = useBoard()
 
-  const RecentBoard = ({ board }) => (
+
+  
+  interface Board {
+    id: string;
+    name: string;
+    // Add other properties as needed
+  }
+
+  const RecentBoard = ({ board }: { board: Board }) => (
     <Card className="w-[280px] overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
       <img src="/api/placeholder/280/140" alt={board.name} className="w-full h-[140px] object-cover" />
       <div className="p-3">

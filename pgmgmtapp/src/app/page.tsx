@@ -8,6 +8,8 @@ import { Star, Plus, Settings2, MoreVertical, Rocket } from 'lucide-react'
 import { useBoard } from '@/contexts/BoardContext'
 import { useRouter } from 'next/navigation'
 import { boards as initialBoards } from '@/data/board-data'
+import { Board } from '@/types/board';
+
 
 export default function HomePage() {
   const router = useRouter()
@@ -20,7 +22,8 @@ export default function HomePage() {
     }
   }, [boards.length, setBoards])
 
-  const RecentBoard = ({ board }) => (
+
+  const RecentBoard = ({ board }: { board: Board }) => (
     <div 
       className="relative group cursor-pointer"
       onClick={() => {
